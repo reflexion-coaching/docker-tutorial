@@ -363,7 +363,7 @@ $ docker exec -it 255 mysql -u root -p
 Enter password: tutorial
 ```
 
-CQFD ! Les Dockerfile sont très pratiques pour améliorer la configuration de base des images. Leurs utilisations sont très fréquentes avec des images Node.js ou Python car il est possible d'installer toutes les dépendances nécessaires et les variables d'environnement.
+CQFD ! Les Dockerfiles sont très pratiques pour améliorer la configuration de base des images. Leurs utilisations sont très fréquentes avec des images Node.js ou Python car il est possible d'installer toutes les dépendances nécessaires et les variables d'environnement.
 
 Malheureusement, on ne peut pas configurer le mappage des ports via un DockerFile car cela concerne un containeur et pas l'image. C'est pourquoi, nous allons parler des fichiers **`Docker Compose`**. 
 
@@ -403,7 +403,7 @@ Les lignes de ce docker-compose.yml signifie :
 Ensuite, pour créer l'image et lancer le containeur, on exécute :
 
 ```
-docker-compose up -d
+docker-compose up -d --build
 ```
 
 Excellent, notre image est créée et notre containeur aussi :) 
@@ -436,6 +436,14 @@ services:
     - 33060:33060
 ```
 
+On relance notre réseau :
+
+```
+$ docker-compose down
+
+$ docker-compose up -d --build
+```
+
 Vérifions maintenant que le containeur possède les mêmes caractéristiques qu'en ligne de commande :
 
 ```
@@ -448,16 +456,13 @@ CQFD !
 
 ## 8. Exécuter un script SQL au démarrage (spécifique MySQL)
 
-Il serait intéressant de configurer notre base de données au démarrage du containeur. Pour ce tutoriel, la configuration de la base de données est : 
+Il serait intéressant de configurer notre base de données au démarrage du containeur. Pour ce tutoriel, la configuration de la base de données est simplement la création d'une nouvelle table *Users*.
 
-* création d'un nouvel utilisateur `User1` identifié par le mote de passe `password1`
-* création d'une base de données `reflexion-coaching`
-
-Pour faire cela, nous allons nous servir de la documentation MySQL - Docker (https://hub.docker.com/_/mysql) :
+Nous allons nous servir de la documentation MySQL - Docker (https://hub.docker.com/_/mysql) :
 
 *When a container is started for the first time, a new database with the specified name will be created and initialized with the provided configuration variables. Furthermore, it will execute files with extensions .sh, .sql and .sql.gz that are found in /docker-entrypoint-initdb.d. Files will be executed in alphabetical order. **You can easily populate your mysql services by mounting a SQL dump into that directory and provide custom images with contributed data.** SQL files will be imported by default to the database specified by the MYSQL_DATABASE variable.*
 
-En résumé, ce paragraphe signifie qu'il faut placer nos fichiers SQL dans le dossier Docker `/docker-entrypoint-initdb.d`. Pas de problème, cela peut être fait avec les **volumes** ! Commençons par créer notre fichier de configuration `database-configuration.sql` dans le dossier `sql-scripts`:
+En résumé, ce paragraphe signifie qu'il faut placer nos fichiers SQL dans le dossier Docker `/docker-entrypoint-initdb.d`. Pas de problème, cela peut être fait via les **volumes** ! Commençons par créer notre fichier de configuration `database-configuration.sql` dans le dossier `sql-scripts`:
 
 ```
 CREATE TABLE Users (
@@ -486,6 +491,8 @@ services:
 Après avoir supprimé les images et containeurs précédents, il suffit de relancer le réseau et de vérifier que la table a bien été créée :
 
 ```
+$ docker-compose down
+
 $ docker-compose up -d --build
 ...
 Starting mysql-tutorial ... done
@@ -527,7 +534,7 @@ Excellent ! En résumé, on a une instance MySQL :
 * accesibles aux ports 3306 et 33060
 * configurée avec une base de données *reflexion-coaching* spécifique au projet
 * un utilisateur spécifique 
-* un début de schemé de données avec la table *Users*.
+* un début de schéma de données avec la table *Users*.
 
 
 ## 9. Persitence des données
@@ -577,7 +584,7 @@ mysql> show tables;
 
 Mince, la table *Adresses* a bien été supprimée ! Ce n'est pas pratique ... 
 
-Pour faire persister les données, nous pouvons à nouveau utiliser la technique de volume lié. Commençons par créer un dossier **data** qui contiendra les données de base `mkdir data`. Ensuite, lions notre nouveau dossier avec l'endroit où le containeur MySQL stocke les données `/var/lib/mysql`.
+Pour faire persister les données, nous pouvons à nouveau utiliser la technique des volumes liés. Commençons par créer un dossier **data** qui contiendra les données de base `mkdir data`. Ensuite, lions notre nouveau dossier avec l'endroit où le containeur MySQL stocke les données `/var/lib/mysql`.
 
 ```
 version: "3.8"
@@ -634,7 +641,7 @@ drwxr-x---    3 tigrou  staff        96 23 nov 16:13 sys
 -rw-r-----    1 tigrou  staff  16777216 23 nov 16:15 undo_002
 ```
 
-Excellent ! Ces fichiers sont les fichiers utiles à la construction de nos bases de données. Le dossier `reflexion@002dcoaching` contient notamment les inforamtions sur la base de données *reflexion-coaching*. Maintenant, créons à nouveau une nouvelle tables *Addresses* :
+Excellent ! Ces fichiers sont les fichiers utiles à la construction de nos bases de données. Le dossier `reflexion@002dcoaching` contient notamment les inforamtions sur la base de données *reflexion-coaching*. Maintenant, créons à nouveau une nouvelle table *Addresses* :
 
 ```
 $ docker ps 
