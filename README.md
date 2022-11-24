@@ -28,9 +28,9 @@ Les containeurs ont plusieurs utilités :
 
 * Faciliter le déploiement : sur les serveurs, les différents micro-services d'une application fonctionnent très souvent dans des containeurs. En effectuant le développement directement avec des containeurs, le CI&CD est facilité.
 
-* Moins d'applications installées : pas besoin d'installer MySQL, Node.js, python ... directement sur l'ordinateur. Il suffit d'utiliser les containeur de ces applications. 
+* Moins d'applications installées : pas besoin d'installer MySQL, Node.js, python ... directement sur l'ordinateur. Il suffit d'utiliser les containeurs de ces applications. 
 
-Par contre, la préparation de l'environnement de travail prend plus de temps. C'est commes les raccourcis de clavier : au début, c'est un peu laborieux et la souris semble plus pratique mais une fois maitrisés, les raccourcis permettent un gain de temps et d'efficacité. 
+Par contre, la préparation de l'environnement de travail prend plus de temps. C'est comme les raccourcis de clavier : au début, c'est un peu laborieux et la souris semble plus pratique mais une fois maitrisés, les raccourcis permettent un gain de temps et d'efficacité. 
 
 ## Docker
 
@@ -42,7 +42,7 @@ D'un point de vue technique, Docker est écrit en **Go** et utilises la technolo
 
 Docker utilise une architecture client-serveur. Un *service* (daemon) écoute les requêtes envoyées par le *client*  via une *REST API* :
 
-* **Le service ou daemon Docker (appelé, `dockerd`)** écoute les requêtes de l'API et gère les images, containeurs, le réseau et le volume.
+* **Le service ou daemon Docker (appelé, `dockerd`)** écoute les requêtes de l'API et gère les images, les containeurs, le réseau et le volume.
 
 * **Le client Docker (appelé, `docker`)** permet aux utilisateurs d'interagir avec le service via l'API.
 
@@ -249,7 +249,7 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 mysql> 
 ```
 
-CQFD :) Le mot de passe a rentré est celui défini lors de la commande `docker run` (ici : "tutorial"). La documentation sur la commande `docker exec` est disponible sur  https://docs.docker.com/engine/reference/commandline/exec/.
+CQFD :) Le mot de passe à rentrer est celui défini lors de la commande `docker run` (ici : "tutorial"). La documentation sur la commande `docker exec` est disponible sur  https://docs.docker.com/engine/reference/commandline/exec/.
 
 Notre terminal est maintenant celui du containeur MySQL. On peut maintenant interagir en ligne de commande avec notre base de donnes. Par exemple : la liste des base de données est :
 
@@ -272,7 +272,7 @@ Pour sortir du terminal MySQL, il suffit d'appuyer sur ctrl + D.
 
 Dans l'exemple précédent, la commande `docker exec` a envoyé le reste de la commande (à savoir : `mysql -u root -p`) au terminal du containeur pour ouvrir le terminal spécifique de MySQL. 
 
-Docker Desktop propose un terminal permettant d'interagir avec le containeur sans envoyer une commande (`mysql -u root -p`). Il suffit d'aller dans l'ognlet **Containers / Apps** et de cliquer sur le bouton représentant la **CLI** (Command Line Interface). Ensuite, la commande `mysql -u root -p tutorial` indique à Docker Desktop d'ouvir un terminal MySQL :) A nouveau, nous avons accès à la base de données en ligne de commande. 
+Docker Desktop propose un terminal permettant d'interagir avec le containeur sans envoyer une commande (`mysql -u root -p`). Il suffit d'aller dans l'onglet **Containers / Apps** et de cliquer sur le bouton représentant la **CLI** (Command Line Interface). Ensuite, la commande `mysql -u root -p tutorial` indique à Docker Desktop d'ouvir un terminal MySQL :) A nouveau, nous avons accès à la base de données en ligne de commande. 
 
 #### 5.3 Via une application 
 
@@ -315,7 +315,7 @@ $ touch Dockerfile
 $ touch README.md
 ```
 
-Bien maintenant, écrivons quelques lignes dans le `Dockerfile` :
+Bien, maintenant écrivons quelques lignes dans le `Dockerfile` :
 
 ```
 # syntax=docker/dockerfile:1
@@ -370,7 +370,7 @@ Malheureusement, on ne peut pas configurer le mappage des ports via un DockerFil
 
 ## 7. Docker Compose
 
-Les fichiers `Docker Compose` sont des fichiers de configuration d'environnement Docker. Ces fichiers permettent de gèrer notre réseau / architecture de containeurs. 
+Les fichiers `Docker Compose` sont des fichiers de configuration d'environnement Docker. Ces fichiers permettent de gérer notre réseau / architecture de containeurs. 
 
 ### 7.1. Docker Compose basique
 
@@ -390,11 +390,11 @@ services:
     build: .
 ```
 
-Les lignes de ce docker-compose.yml signifie :
+Les lignes de ce docker-compose.yml signifient :
 
 * `version: "3.8"` : la version des fichiers au format Compose. La version 3.8 est actuellement la plus à jour. 
 
-* `services` : les fichiers Compose permettent de définir un réseau de containeur. Les différents containeurs créent une liste de services. 
+* `services` : les fichiers Compose permettent de définir un réseau de containeurs Les différents containeurs créent une liste de services. 
 
 * `mysql` : notre service s'appelle *mysql*.
 
@@ -531,13 +531,13 @@ mysql> show tables;
 ```
 
 Excellent ! En résumé, on a une instance MySQL :
-* accesibles aux ports 3306 et 33060
+* accesible aux ports 3306 et 33060
 * configurée avec une base de données *reflexion-coaching* spécifique au projet
 * un utilisateur spécifique 
 * un début de schéma de données avec la table *Users*.
 
 
-## 9. Persitence des données
+## 9. Persistance des données
 
 Le problème majeur avec les containeurs est que dès qu'ils sont supprimés, les données sont supprimées également. Par-exemple, si je crée une nouvelle table *Address* :
 
@@ -641,7 +641,7 @@ drwxr-x---    3 tigrou  staff        96 23 nov 16:13 sys
 -rw-r-----    1 tigrou  staff  16777216 23 nov 16:15 undo_002
 ```
 
-Excellent ! Ces fichiers sont les fichiers utiles à la construction de nos bases de données. Le dossier `reflexion@002dcoaching` contient notamment les inforamtions sur la base de données *reflexion-coaching*. Maintenant, créons à nouveau une nouvelle table *Addresses* :
+Excellent ! Ces fichiers sont les fichiers utiles à la construction de nos bases de données. Le dossier `reflexion@002dcoaching` contient notamment les informations sur la base de données *reflexion-coaching*. Maintenant, créons à nouveau une nouvelle table *Addresses* :
 
 ```
 $ docker ps 
@@ -669,7 +669,7 @@ mysql> SHOW tables;
 2 rows in set (0.00 sec)
 ```
 
-Parfait ! La nouvelle table a été créée et le contenu dossier `/data/reflexion@002dcoaching` a été modifiée. 
+Parfait ! La nouvelle table a été créée et le contenu dossier `/data/reflexion@002dcoaching` a été modifié. 
 
 Maintenant, supprimons le containeur, créons-en un nouveau et vérifions si la table *Addresses* est toujours présente. 
 
